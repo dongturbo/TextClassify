@@ -1,7 +1,12 @@
-1.下载安装Python 3.0以上版本,访问https://www.python.org/downloads/
-2.下载安装nodejs最新版，访问https://nodejs.org/en/download/
-3.在根目录下打开命令行，依次输入以下参数并按回车：
+1.下载安装Python 3.0以上版本,访问https://www.python.org/ftp/python/3.5.1/python-3.5.1-amd64.exe
+2.下载安装nodejs最新版，访问https://nodejs.org/dist/v5.2.0/node-v5.2.0-x86.msi
+3.下载安装git客户端，访问http://git-scm.com/download/win
+4.在根目录下打开命令行，依次输入以下参数并按回车：
+	npm install -g bower
 	bower install
 	npm install
-4.以上安装完成后，在命令行输入 node app.js运行网站
-5.在浏览器输入http://localhost:3000/ 访问网站即可
+5.以上安装完成后，在命令行输入 node app.js运行网站
+6.在浏览器输入http://localhost:3000/ 访问网站即可
+7.打开网页后，首页是目前能够进行分类的类别
+8.目前可以通过上传txt文件进行分类或者直接复制文本内容到输入框中进行分类
+9.还可以把带有敏感词汇的关键词归到一个类别放到txt文件中，并以该类别命名，并存放到execfile的Abnormal的文件夹中，这样程序会自动识别这个文件夹的词汇和新加的类别，词汇得越多越好，这样提高准确率
