@@ -20,33 +20,31 @@ block content
               a.ajax-link#sli1(href='#sf1',role="tab",data-toggle="tab")
                 span  &nbsp 测试文本
             li
-              a.ajax-link#sli2(href='#sf1',role="tab",data-toggle="tab")
+              a.ajax-link#sli2(href='#sf2',role="tab",data-toggle="tab")
                 span  &nbsp 应用       
 
             //li.nav-header.hidden-md 数据统计
     .row.col-sm-10
-      h3#title 请上传文本文件
+      h3#title 请上传文本文件或将文本内容复制到文本框
       hr.col-sm-12#divider
       .col-sm-4
         input#loadfile.file.form-control(placeholder="请上传文件" type='file',data-preview-file-type='text')
-        //-.input-group
-          input.form-control(placeholder="请上传文件",aria-describedby="basic-addon1")    
-          span.input-group-addon#basic-addon1
-            上传
-      .col-sm-2.col-sm-offset-1
+      .col-sm-4#contentGroup
+        input.form-control#textContent(placeholder="内容粘贴到输入框中")    
+      .col-sm-1
         button#calc.btn.btn-primary(type='button')  分类
-      .col-sm-1.btn-group#traingroup
-        button.btn.btn-default.dropdown-toggle(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") 选择训练方法
-          span.caret
-        ul.dropdown-menu
-          li
-            a(href="#")#wholetrain 按整体训练
-          li
-            a(href="#")#typetrain 按类别训练 
+      // .col-sm-1.btn-group#traingroup
+      //   button.btn.btn-default.dropdown-toggle(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") 选择训练方法
+      //     span.caret
+      //   ul.dropdown-menu
+      //     li
+      //       a(href="#")#wholetrain 按整体训练
+      //     li
+      //       a(href="#")#typetrain 按类别训练 
       hr.col-sm-12                
       .tab-content.col-sm-10
         #sf0.tab-pane.in.active.zhanshi
-          #typeContent.hide
+          #typeContent
             label &nbsp文本类别
             table.table.table-bordered
               tr 
@@ -80,6 +78,7 @@ block content
               tr 
                 td  C000024 政治
         #sf1.tab-pane.zhanshi
+          #resultContent
             label &nbsp测试结果:
             table.table.table-bordered.legaltxt.hide
               tr
@@ -101,7 +100,17 @@ block content
               tr
                 td.expect 
                 td.result 
-            //label 测试结果为汽车，请进行人工研判
+        #sf2.tab-pane.zhanshi
+          #applyResult
+            label &nbsp测试结果:
+            table.table.table-bordered.legaltxt
+              tr
+                td 文本属性：
+                td 分类结果：
+              tr
+                td.expect 
+                td.result
+            label#applyLabel 
                 
         #jindu.tab-pane.col-sm-offset-2
           h4.col-sm-offset-3 正在计算，请稍等...

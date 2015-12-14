@@ -1,18 +1,22 @@
 var express = require('express')
 var port = process.env.PORT || 3000
 var multer = require('multer');
+var bodyParser = require('body-parser');
 var iconv = require('iconv-lite');
 var fs = require('fs');
 var done = false;
 var newName = '';
+var from_code = '';
+var textContent = '';
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads/')
 	},
 	filename: function (req, file, cb) {
-		cb(null, file.originalname)
-		newName = file.originalname;
+		newName = Date.now() + '.txt';
+		cb(null, newName)
+
 	}
 })
 var upload = multer({ storage: storage })
@@ -24,6 +28,7 @@ var exec = require('child_process').exec, child;
 app.set('views', './src')
 app.set('view engine', 'jade')
 app.use(express.static(path.join(__dirname, '/')));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.listen(port)
 console.log('started!')
 
@@ -37,36 +42,50 @@ app.post('/upload', upload.any(), function (req, res, next) {
 	console.log(req.files);
 	res.json(newName);
 	res.end();
+	child = exec('.\\\encodeDetecter\\\probeEncode.exe ' + 'uploads\\' + newName, function (error, stdout, stderr) {
+		console.log('stdout:' + stdout);
+		from_code = stdout;
+		if (error !== null) {
+			console.log('exec error: ' + error);
+		}
+		convertEncode('uploads/' + newName);
+	})
 })
 //ajax请求调用程序进行分类
-app.get('/classify', function (req, res) {
-	convertEncode('uploads/'+newName);
+app.get('/classify1', function (req, res) {
+	convertEncode('uploads/' + newName);
 	child = exec('python execfile/main.py ' + 'uploads/' + newName, { encoding: 'binary' }, function (error, stdout, stderr) {
-		//console.log('stdout: ' + iconv.decode(Buffer.concat(chunks), 'gbk'));
 		var buffer = new Buffer(stdout, 'binary')
 		console.log('stderr: ' + stderr);
 		if (error !== null) {
 			console.log('exec error: ' + error);
 		}
-		//res.json(convertToString(iconv.decode(buffer, 'gbk')));
 		res.send(convertToString(iconv.decode(buffer, 'gbk')));
-		//res.end();
 	})
 })
-app.get('/test', function (req, res) {
-
-})
-app.get('/apply', function (req, res) {
-
-})
-//对文件格式进行转换
-function convertEncode(filename) {
-	fs.readFile(filename, function (err, data) {
-		if (err) throw err;
-		console.log(iconv.decode(data, 'utf8'));
-		console.log(data);
+app.post('/classify2', function (req, res) {
+	textContent = req.body.data;
+	console.log(textContent);
+	newName = Date.now() + '.txt';
+	fs.writeFile('uploads/' + newName, textContent, {
+        encoding: 'utf8'
+	}, function (err) {
+        if (err) {
+			throw err;
+        }
+		child = exec('python execfile/main.py ' + 'uploads/' + newName, { encoding: 'binary' }, function (error, stdout, stderr) {
+			var buffer = new Buffer(stdout, 'binary')
+			console.log('stderr: ' + stderr);
+			if (error !== null) {
+				console.log('exec error: ' + error);
+			}
+			res.send(convertToString(iconv.decode(buffer, 'gbk')));
+		})
 	});
-}
+
+})
+
+
 //对结果进行解析
 function convertToString(stdout) {
 	var temp = (stdout + '').split(',');
@@ -75,4 +94,18 @@ function convertToString(stdout) {
 	result += ','
 	result += temp[1].split(':')[1];
 	return result;
+}
+//对文件字符编码格式进行转换
+function convertEncode(filename) {
+	if (from_code == 'utf8')
+		return;
+	else if (from_code == '')
+		from_code = 'gbk'
+	fs.writeFile(filename, iconv.decode(fs.readFileSync(filename), from_code), {
+        encoding: 'utf8'
+	}, function (err) {
+        if (err) {
+			throw err;
+        }
+	});
 }
