@@ -1,0 +1,37 @@
+//- Custom Configuration
+block config
+  - var baseUrl = 'src/'
+  - var bowerUrl = 'bower_components/'
+
+doctype html
+
+<!--[if lt IE 9]>
+<html class='lt-ie9 no-js' lang='en'>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<html class='no-js' lang='en'>
+<!--<![endif]-->
+
+head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+  title 文本分类
+  meta(name='description', content= 'A new Yeogurt application')
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  block stylesheets
+    link(rel='stylesheet',href=bowerUrl + 'bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href= baseUrl + 'styles/bootstrap-cerulean.min.css')
+    link(rel='stylesheet',href=bowerUrl+'bootstrap-fileinput/css/fileinput.min.css')
+    link(rel='stylesheet', href= baseUrl + 'styles/main.css')
+    link(rel='stylesheet', href= baseUrl + 'styles/custom.css')
+
+body
+  
+  block content
+  block scripts
+    script(src= bowerUrl + 'jquery/dist/jquery.min.js')    
+    script(src= bowerUrl + 'bootstrap/dist/js/bootstrap.min.js')
+    script(src= bowerUrl + 'bootstrap-fileinput/js/fileinput.min.js')
+    script(src= bowerUrl + 'bootstrap-fileinput/js/fileinput_locale_zh.js')
+    script(src= baseUrl + 'scripts/main.js')
+</html>

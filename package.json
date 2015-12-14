@@ -1,0 +1,24 @@
+{
+  "name": "textclassify",
+  "version": "1.0.0",
+  "description": "textclassify",
+  "main": "app.js",
+  "dependencies": {
+    "Buffer": "^0.0.0",
+    "express": "^4.13.3",
+    "iconv-lite": "^0.4.13",
+    "jade": "^1.11.0",
+    "multer": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chinese",
+    "text",
+    "classify"
+  ],
+  "author": "dongbo",
+  "license": "ISC"
+}

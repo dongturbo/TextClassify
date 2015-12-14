@@ -1,0 +1,109 @@
+extends includes/base
+
+block content
+  .navbar(role='navigation')
+      .row
+        .col-sm-2.col-sm-offset-5
+          a.navbar-brand.center-block(href='index.html')
+            span SVM文本分类器
+  .container
+    // left menu starts
+    .col-sm-2.col-lg-2#daohang
+      .sidebar-nav
+        .nav-canvas
+          ul.nav.nav-pills.nav-stacked.main-menu
+            //li.nav-header.hidden-md 选择算法
+            li.active
+              a.ajax-link#sli0(href='#sf0',role="tab",data-toggle="tab")
+                span  &nbsp 训练文本
+            li
+              a.ajax-link#sli1(href='#sf1',role="tab",data-toggle="tab")
+                span  &nbsp 测试文本
+            li
+              a.ajax-link#sli2(href='#sf1',role="tab",data-toggle="tab")
+                span  &nbsp 应用       
+
+            //li.nav-header.hidden-md 数据统计
+    .row.col-sm-10
+      h3#title 请上传文本文件
+      hr.col-sm-12#divider
+      .col-sm-4
+        input#loadfile.file.form-control(placeholder="请上传文件" type='file',data-preview-file-type='text')
+        //-.input-group
+          input.form-control(placeholder="请上传文件",aria-describedby="basic-addon1")    
+          span.input-group-addon#basic-addon1
+            上传
+      .col-sm-2.col-sm-offset-1
+        button#calc.btn.btn-primary(type='button')  分类
+      .col-sm-1.btn-group#traingroup
+        button.btn.btn-default.dropdown-toggle(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") 选择训练方法
+          span.caret
+        ul.dropdown-menu
+          li
+            a(href="#")#wholetrain 按整体训练
+          li
+            a(href="#")#typetrain 按类别训练 
+      hr.col-sm-12                
+      .tab-content.col-sm-10
+        #sf0.tab-pane.in.active.zhanshi
+          #typeContent.hide
+            label &nbsp文本类别
+            table.table.table-bordered
+              tr 
+                td(rowspan=10,align="center") 
+                  strong 正常分类
+                td C000007 汽车 
+              tr 
+                td C000008 财经           
+              tr 
+                td C000010 IT
+              tr 
+                td  C000013 健康
+              tr 
+                td  C000014 体育
+              tr 
+                td  C000016 旅游
+              tr 
+                td  C000020 教育
+              tr 
+                td  C000022 招聘
+              tr 
+                td  C000023 文化
+              tr 
+                td  C000024 军事
+              tr 
+                td(rowspan=10,align="center") 
+                  strong 非正常分类
+                td C0000025 暴力
+              tr 
+                td  C000024 色情
+              tr 
+                td  C000024 政治
+        #sf1.tab-pane.zhanshi
+            label &nbsp测试结果:
+            table.table.table-bordered.legaltxt.hide
+              tr
+                td(colspan=2,align="center")  
+                  strong 正常类别
+              tr
+                td 应属类别：
+                td 测试结果：
+              tr
+                td.expect 
+                td.result
+            table.table.table-bordered.illegaltxt.hide
+              tr
+                td(colspan=2,align="center")  
+                  strong 非正常类别
+              tr
+                td 应属类别：
+                td 测试结果：
+              tr
+                td.expect 
+                td.result 
+            //label 测试结果为汽车，请进行人工研判
+                
+        #jindu.tab-pane.col-sm-offset-2
+          h4.col-sm-offset-3 正在计算，请稍等...
+          img#loading-img.col-sm-offset-2(src=baseUrl +'images/loading.gif',width='320px',height='240px') 
+            
