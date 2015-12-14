@@ -24,7 +24,6 @@ var app = express();
 var path = require('path');
 var exec = require('child_process').exec, child;
 
-
 app.set('views', './src')
 app.set('view engine', 'jade')
 app.use(express.static(path.join(__dirname, '/')));
@@ -38,12 +37,11 @@ app.get('/', function (req, res) {
 		title: '文本分类首页'
 	})
 });
+//接收上传的文件
 app.post('/upload', upload.any(), function (req, res, next) {
-	console.log(req.files);
 	res.json(newName);
 	res.end();
 	child = exec('.\\\encodeDetecter\\\probeEncode.exe ' + 'uploads\\' + newName, function (error, stdout, stderr) {
-		console.log('stdout:' + stdout);
 		from_code = stdout;
 		if (error !== null) {
 			console.log('exec error: ' + error);
@@ -56,13 +54,15 @@ app.get('/classify1', function (req, res) {
 	convertEncode('uploads/' + newName);
 	child = exec('python execfile/main.py ' + 'uploads/' + newName, { encoding: 'binary' }, function (error, stdout, stderr) {
 		var buffer = new Buffer(stdout, 'binary')
-		console.log('stderr: ' + stderr);
+		//console.log('stderr: ' + stderr);
 		if (error !== null) {
 			console.log('exec error: ' + error);
 		}
 		res.send(convertToString(iconv.decode(buffer, 'gbk')));
+		deleteUploadFile('uploads/');
 	})
 })
+//ajax对post过来的数据进行分类
 app.post('/classify2', function (req, res) {
 	textContent = req.body.data;
 	console.log(textContent);
@@ -75,11 +75,12 @@ app.post('/classify2', function (req, res) {
         }
 		child = exec('python execfile/main.py ' + 'uploads/' + newName, { encoding: 'binary' }, function (error, stdout, stderr) {
 			var buffer = new Buffer(stdout, 'binary')
-			console.log('stderr: ' + stderr);
+			//console.log('stderr: ' + stderr);
 			if (error !== null) {
 				console.log('exec error: ' + error);
 			}
 			res.send(convertToString(iconv.decode(buffer, 'gbk')));
+			deleteUploadFile('uploads/');
 		})
 	});
 
@@ -108,4 +109,16 @@ function convertEncode(filename) {
 			throw err;
         }
 	});
+}
+//删除上传的文件
+function deleteUploadFile(path) {
+	if (fs.existsSync(path)) {
+		var files = fs.readdirSync(path);
+		files.forEach(function (file, index) {         
+			if(file!='.gitkeep'){
+				var curPath = path + "/" + file;
+				fs.unlinkSync(curPath);
+			}			
+        });
+	}
 }

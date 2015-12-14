@@ -1,6 +1,6 @@
 1.下载安装Python 3.0以上版本,访问https://www.python.org/ftp/python/3.5.1/python-3.5.1-amd64.exe
 2.下载安装nodejs最新版，访问https://nodejs.org/dist/v5.2.0/node-v5.2.0-x86.msi
-3.下载安装git客户端，访问http://git-scm.com/download/win
+3.下载安装git客户端，访问https://github.com/git-for-windows/git/releases/download/v2.6.3.windows.1/Git-2.6.3-32-bit.exe
 4.在根目录下打开命令行，依次输入以下参数并按回车：
 	npm install -g bower
 	bower install
