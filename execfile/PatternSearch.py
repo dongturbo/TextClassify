@@ -4,7 +4,7 @@ __author__ = 'ShdowWalker'
 from KeyWordsFilter import *
 import codecs
 
-def AbnormalClassClassify(fileName, thershold = 0.005):
+def AbnormalClassClassify(fileName, thershold = 0.01):
     abnormalfeaturedic = readabnormalfeature()
     file = codecs.open(fileName, encoding = 'utf8')
     textstr = file.read()
