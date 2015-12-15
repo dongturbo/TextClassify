@@ -1,12 +1,38 @@
+项目配置说明(进行以下安装前尽量将杀毒软件或安全卫士等软件退出否则会影响安装过程):
 1.下载安装Python 3.0以上版本,访问https://www.python.org/ftp/python/3.5.1/python-3.5.1-amd64.exe
+	1.1由于python需要配置环境变量，即把python的安装路径、以及python安装路径下的Scripts文件路径一同放到系统环境变量的path路径下。
+	1.2配置环境变量的教程可参考http://jingyan.baidu.com/article/48206aeafdcf2a216ad6b316.html。
+	1.3配置完成后，可在命令行输入python --version来测试是否可用，以及输入pip --version来测试依赖包管理器是否可用，若能正常显示版本信息即为可用，否则请检查环境变量配置是否正确
+	1.4由于项目的算法部分使用python实现的，且引用了chardet、jieba这两个module，若运行时提示ImportError: No module named 'xxx'问题，'xxx'即为缺少的module的名称，用pip install 'xxx'来导入module即可
 2.下载安装nodejs最新版，访问https://nodejs.org/dist/v5.2.0/node-v5.2.0-x86.msi
+	2.1安装完后，在命令行输入node --version、npm --version检测是否可用，若显示出版本信息即为可用，否则检查安装过程是否正确，或卸载重新安装
 3.下载安装git客户端，访问https://github.com/git-for-windows/git/releases/download/v2.6.3.windows.1/Git-2.6.3-32-bit.exe
+	3.1安装完成后，在命令行输入git --version检测是否可用，若显示出版本信息即为可用，否则检查安装过程是否正确或卸载重新安装
 4.在根目录下打开命令行，依次输入以下参数并按回车：
 	npm install -g bower
 	bower install
 	npm install
-5.以上安装完成后，在命令行输入 node app.js运行网站
+5.以上安装完成后，在根目录下的命令行输入 node app.js运行网站，并将其最小化（如果关闭的话，网站运行也会停止）
 6.在浏览器输入http://localhost:3000/ 访问网站即可
 7.打开网页后，首页是目前能够进行分类的类别
 8.目前可以通过上传txt文件进行分类或者直接复制文本内容到输入框中进行分类
 9.还可以把带有敏感词汇的关键词归到一个类别放到txt文件中，并以该类别命名，并存放到execfile的Abnormal的文件夹中，这样程序会自动识别这个文件夹的词汇和新加的类别，词汇得越多越好，这样提高准确率
+
+
+
+文本分类训练过程：
+1.	对于正常文本的分类,我们采用的是基于SVM的分类模型。
+	SVM属于有监督分类，所以必须需要已有分类好的数据用于训练模型，在这里已分类好的训练数据，
+	我们采用的是搜狗公司提供的文本分类语料库，网址是http://www.sogou.com/labs/dl/c.html。
+2.	文本分类的训练，首要任务是实现文本的特征向量表示，即把文本用向量表示,在这里采用的是向量
+	空间模型即SVM。为了对文本进行特征向量表示，我们需要对于文本进行分词的预处理,在这里我们
+	采用的Python的jieba分词模块对于SogouC文件夹下的未分词的文本分词后保存到SogouCCut文件
+	夹下。有了分词后的文件，我们可以对这些分词文件进行处理通过卡方检验的方式进行特征选取,不
+	进行特征选取的话，空间向量维度太高，分类效果不好。特征选取的代码在FeatureSelection.py
+	（通过 python FeatureSelection.py可以执行此程序）文件中，执行这个文件后我们会对每个类
+	别选取1000个特征词进行表示，搜狗语料库共有10个类别，即选取10000个特征，由于重复共选取了
+	9508个特征,在SVMFeature.txt文件中可以查看。现在已经有了特征,还缺少特征的权重,在这里我们
+	采用TF*IDF的计算方式计算权重，TF某个词w在文档d中出现次数count(w, d)和文档d中总词数size(d)
+	的比值，IDF为即文档总数n与词w所出现文件数docs(w, D)比值的对数。对于特征权重的计算可以在
+	FeatureWeight.py 和TestFeatureWeight.py文件中查看。训练文本特征向量表示存储在train.svm
+	文件中,测试文本的特征向量表示存储在test.svm文件中。之所以按照这样的格式存储,是为了比较方便的调用LIBSVM(LIBSVM)进行分类。
