@@ -65,7 +65,6 @@ app.get('/classify1', function (req, res) {
 //ajax对post过来的数据进行分类
 app.post('/classify2', function (req, res) {
 	textContent = req.body.data;
-	console.log(textContent);
 	newName = Date.now() + '.txt';
 	fs.writeFile('uploads/' + newName, textContent, {
         encoding: 'utf8'

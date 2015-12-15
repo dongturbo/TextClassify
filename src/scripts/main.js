@@ -65,6 +65,8 @@ $('#loadfile').on('filebatchuploadsuccess', function (event, data, previewId, in
 $('#calc').click(function () {
 
   if (uploadComplete) {
+    $('#resultContent').hide();
+    $('#applyResult').hide();
     $("#jindu").show();
     $.ajax({
       url: '/classify1',
@@ -82,6 +84,7 @@ $('#calc').click(function () {
   }
   else if ($('#textContent').val() != '') {
     var content = new Object();
+    $('#applyResult').hide();
     content.data = $('#textContent').val();
     $("#jindu").show();
     $.ajax({
